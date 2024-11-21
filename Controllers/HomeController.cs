@@ -7,8 +7,7 @@ using System.Diagnostics;
 
 namespace Okta_Cookie_Auth.Controllers
 {
-    //Push Checking 
-    //Push Cheking2
+    
     [Authorize]
     public class HomeController : Controller
     {
