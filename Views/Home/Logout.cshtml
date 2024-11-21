@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewData["Title"] = "Logout";
+    var alertMessage = TempData["AlertMessage"] as string;
+}
+
+<h1>Your Logout</h1>
+
+@if(!string.IsNullOrEmpty(alertMessage))
+{
+    <script type="text/javascript">
+        alert('@alertMessage');
+        window.location.href = '@Url.Action("Index", "Home")';
+    </script>
+}
+
