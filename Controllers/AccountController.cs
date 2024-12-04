@@ -5,7 +5,7 @@ using System.Security.Claims;
 namespace Okta_Cookie_Auth.Controllers
 {
     // Not used with this controller only used for cookie authetication but this is openId authetication
-    public class AccountController : Controller
+    /*public class AccountController : Controller
     {
         [HttpGet]
         public IActionResult Login()
@@ -14,7 +14,7 @@ namespace Okta_Cookie_Auth.Controllers
         }
 
         // Not usefull after including Okta Authetication
-       /* [HttpPost]
+       *//* [HttpPost]
         public async Task<IActionResult> Login(string urn, string pwd)
         {
             if(urn == "Sree" && pwd == "1234")
@@ -26,6 +26,6 @@ namespace Okta_Cookie_Auth.Controllers
                 await HttpContext.SignInAsync(principal);
             }
             return View();
-        }*/
-    }
+        }*//*
+    }*/
 }

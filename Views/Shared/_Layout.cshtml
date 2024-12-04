@@ -37,6 +37,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Other">Other</a>
                         </li>
+                        @if(User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                    <p class="nav-link text-dark">Hello, @User.Identity.AuthenticationType</p> @* also add name other okta values *@
+                            </li>    
+                        }
                     </ul>
                 </div>
             </div>
