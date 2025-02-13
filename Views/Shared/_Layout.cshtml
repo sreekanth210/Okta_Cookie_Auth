@@ -40,7 +40,7 @@
                         @if(User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                    <p class="nav-link text-dark">Hello, @User.Identity.AuthenticationType</p> @* also add name other okta values *@
+                                    <p class="nav-link text-dark">Hello, @User.Identity.IsAuthenticated</p> @* also add name other okta values *@
                             </li>    
                         }
                     </ul>
