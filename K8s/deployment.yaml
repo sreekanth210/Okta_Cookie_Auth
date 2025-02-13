@@ -1,0 +1,21 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+	name: myapp-deployment
+	labels:
+	    app: myapp
+spec:
+	replicas: 4
+	selector:
+		matchLabels:
+	      app: myapp
+	template:
+		metadata:
+	      labels:
+	        app: myapp
+	    spec:
+	      containers:
+			- name: myapp-container
+			  image: sreekanthsree1999/mvc_core_app
+			  ports:
+				- containerPort: 80
