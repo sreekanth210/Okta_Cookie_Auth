@@ -12,6 +12,6 @@ WORKDIR /app
 
 COPY --from=build /app/puplish .
 
-EXPOSE 8080
+EXPOSE 8081
 
 ENTRYPOINT ["dotnet", "Okta_Cookie_Auth.dll"]
