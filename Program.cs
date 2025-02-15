@@ -1,5 +1,6 @@
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.UseUrls("http://*:8085", "https://*:443");
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddAuthentication(options =>
