@@ -7,10 +7,10 @@ RUN dotnet restore
 
 RUN dotnet publish Okta_Cookie_Auth.csproj -c Release -o /app/publish
 
-FROM mrc.microsoft.com/dotnet/sdk:8.0 As runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 
-COPY --from=build /app/puplish .
+COPY --from=build /app/publish .
 
 EXPOSE 8081
 
