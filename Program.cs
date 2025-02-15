@@ -1,6 +1,6 @@
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.UseUrls("http://*:8085", "https://*:443");
+builder.WebHost.UseUrls("http://*:8085"); //By default port no(Container listening only on this port only) is 8080. This is very important because this port number only the cotainer listen remainings are getting error
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddAuthentication(options =>
