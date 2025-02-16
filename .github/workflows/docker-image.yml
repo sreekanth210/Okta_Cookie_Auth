@@ -1,7 +1,9 @@
 name: Build, Push, and Deploy to Kubernetes
 
 on:
-  workflow_dispatch:  # Allows manual trigger
+  push:
+    branches:
+      - master  # Runs only when code is pushed to the master branch
 
 jobs:
   build-and-push:
