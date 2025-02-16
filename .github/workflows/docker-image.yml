@@ -41,9 +41,9 @@ jobs:
     #   run: |
     #     echo "${{ secrets.KUBECONFIG }}" > kubeconfig.yaml
     #     export KUBECONFIG=kubeconfig.yaml
-        
-    #     # Update the Kubernetes Deployment with the new image
-    #     kubectl set image deployment/okta-cookie-auth okta-cookie-auth=${{ secrets.DOCKER_USERNAME }}/okta_cookie_auth:${GITHUB_SHA::7} --namespace=default
 
-    #     # Verify Deployment
-    #     kubectl rollout status deployment/okta-cookie-auth --namespace=default
+    #     # Update Kubernetes Deployment with new image tag
+    #     kubectl set image deployment/myapp-deployment myapp-container=${{ secrets.DOCKER_USERNAME }}/mvc_core_app:$IMAGE_TAG --namespace=default
+
+    #     # Verify Deployment Rollout
+    #     kubectl rollout status deployment/myapp-deployment --namespace=default
