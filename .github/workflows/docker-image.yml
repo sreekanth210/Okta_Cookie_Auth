@@ -46,4 +46,5 @@ jobs:
         kubectl set image deployment/myapp-deployment myapp-container=${{ secrets.DOCKER_USERNAME }}/mvc_core_app:$IMAGE_TAG --namespace=default
 
         # Verify Deployment Rollout
-        kubectl rollout status deployment/myapp-deployment --namespace=default
+        kubectl rollout status deployment/myapp-deployment --namespace=default --timeout=5m
+
