@@ -1,4 +1,4 @@
-name: Build, Push, and Deploy to Kubernetes1
+name: Build, Push, and Deploy to Kubernetes
 
 on:
   push:
@@ -43,7 +43,10 @@ jobs:
         export KUBECONFIG=kubeconfig.yaml
 
         # Update Kubernetes Deployment with new image tag
-        kubectl set image deployment/myapp-deployment myapp-container=${{ secrets.DOCKER_USERNAME }}/okta_cookie_auth:latest --namespace=default
+        kubectl set image deployment/myapp-deployment myapp-container=${{ secrets.DOCKER_USERNAME }}/okta_cookie_auth:$IMAGE_TAG --namespace=default
+
+        # Force restart to ensure new pods are created with the latest image
+        kubectl rollout restart deployment myapp-deployment --namespace=default
 
         # Verify Deployment Rollout
         kubectl rollout status deployment/myapp-deployment --namespace=default --timeout=15m
