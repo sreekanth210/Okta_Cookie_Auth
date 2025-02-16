@@ -1,9 +1,10 @@
 name: Build and Push to Docker Hub
 
 on:
-  push:
-    branches:
-      - master  # Runs only when code is pushed to the master branch
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - master  # Runs only when code is pushed to the master branch
 
 jobs:
   build-and-push:
