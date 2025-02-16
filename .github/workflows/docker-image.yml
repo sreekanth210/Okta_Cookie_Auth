@@ -1,9 +1,9 @@
-name: Build, Push, and Deploy to Kubernetes
+name: Build, Push, and Deploy to Kubernetes1
 
 on:
   push:
     branches:
-      - master  # Runs only when code is pushed to the master branch
+      - master  # Runs when code is pushed to master
 
 jobs:
   build-and-push:
@@ -47,4 +47,3 @@ jobs:
 
         # Verify Deployment Rollout
         kubectl rollout status deployment/myapp-deployment --namespace=default --timeout=15m
-
