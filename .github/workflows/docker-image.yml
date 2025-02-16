@@ -46,5 +46,5 @@ jobs:
         kubectl set image deployment/myapp-deployment myapp-container=${{ secrets.DOCKER_USERNAME }}/okta_cookie_auth:$IMAGE_TAG --namespace=default
 
         # Verify Deployment Rollout
-        kubectl rollout status deployment/myapp-deployment --namespace=default --timeout=5m
+        kubectl rollout status deployment/myapp-deployment --namespace=default --timeout=15m
 
