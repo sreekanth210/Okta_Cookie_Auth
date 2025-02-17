@@ -59,8 +59,8 @@ jobs:
     - name: Save IMAGE_NAME to File
       run: |
         echo "IMAGE_NAME=$IMAGE_NAME" > deployment-info.txt
-        git config --global user.name "GitHub Actions"
-        git config --global user.email "actions@github.com"
-        git add deployment-info.txt
-        git commit -m "Update deployment info with IMAGE_NAME"
-        git push
+        # git config --global user.name "GitHub Actions"
+        # git config --global user.email "actions@github.com"
+        # git add deployment-info.txt
+        # git commit -m "Update deployment info with IMAGE_NAME"
+        # git push
