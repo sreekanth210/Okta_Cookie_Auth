@@ -49,10 +49,18 @@ jobs:
         # Update Kubernetes Deployment with new image tag
         kubectl set image deployment/myapp-deployment myapp-container=${{ secrets.DOCKER_USERNAME }}/okta_cookie_auth:latest --namespace=default
 
-        # kubectl set image deployment/myapp-deployment myapp-container=$LATEST_IMAGE --namespace=default
-
         # Force restart to ensure new pods are created with the latest image
-        kubectl rollout restart deployment myapp-deployment --namespace=default
+        kubectl rollout restart deployment/myapp-deployment --namespace=default
 
         # Verify Deployment Rollout
         kubectl rollout status deployment/myapp-deployment --namespace=default --timeout=30m
+
+    # NEW SECTION: Save IMAGE_NAME to a file and push it to the repo
+    - name: Save IMAGE_NAME to File
+      run: |
+        echo "IMAGE_NAME=$IMAGE_NAME" > deployment-info.txt
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git add deployment-info.txt
+        git commit -m "Update deployment info with IMAGE_NAME"
+        git push
