@@ -76,6 +76,6 @@ jobs:
       run: |
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
-        git add .github/workflows/deployment-info.txt
+        git add History/deployment-info.txt
         git commit -m "Update deployment history with new deployment #${DEPLOYMENT_NUM}"
         git push
