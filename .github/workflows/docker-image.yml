@@ -21,7 +21,7 @@ jobs:
         fi
         echo "✅ DOCKER_USERNAME is set."
 
-    # Step 1: Login to Docker Hub 
+    # Step 1: Login to Docker Hub
     - name: Login to Docker Hub 
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
@@ -31,14 +31,12 @@ jobs:
         IMAGE_TAG=${GITHUB_SHA::7}  # Short commit SHA as a unique tag
         IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/okta_cookie_auth:$IMAGE_TAG
         LATEST_IMAGE=${{ secrets.DOCKER_USERNAME }}/okta_cookie_auth:latest
-
         # Save IMAGE_NAME and user info to environment file for later steps
         echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
         echo "LATEST_IMAGE=$LATEST_IMAGE" >> $GITHUB_ENV
         echo "COMMIT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
         echo "GITHUB_USER=${{ github.actor }}" >> $GITHUB_ENV
         echo "DEPLOYMENT_NUM=${{ github.run_number }}" >> $GITHUB_ENV
-
         # Build and Push Docker Image
         docker build --no-cache -t $IMAGE_NAME -t $LATEST_IMAGE .
         docker push $IMAGE_NAME
@@ -49,29 +47,30 @@ jobs:
       run: |
         echo "${{ secrets.KUBECONFIG }}" > kubeconfig.yaml
         export KUBECONFIG=kubeconfig.yaml
-
         # Update Kubernetes Deployment with new image tag
         kubectl set image deployment/myapp-deployment myapp-container=$LATEST_IMAGE --namespace=default
-
         # Force restart to ensure new pods are created with the latest image
         kubectl rollout restart deployment/myapp-deployment --namespace=default
-
         # Verify Deployment Rollout
         kubectl rollout status deployment/myapp-deployment --namespace=default --timeout=30m
 
-    # Step 4: Update Deployment History in .github/workflows/deployment-info.txt
+    # Step 4: Ensure History Folder Exists and Create the File if Needed
+    - name: Ensure History Folder and File Exists
+      run: |
+        mkdir -p History  # Ensure the History folder exists
+        touch History/deployment-info.txt  # Create the file if it doesn't exist
+
+    # Step 5: Update Deployment History in .github/workflows/deployment-info.txt
     - name: Update Deployment History
       run: |
-        DEPLOYMENT_FILE=".github/workflows/deployment-info.txt"
+        DEPLOYMENT_FILE="History/deployment-info.txt"
         NEW_ENTRY="Build, Push, and Deploy to Kubernetes #${DEPLOYMENT_NUM}: Commit ${COMMIT_SHA} pushed by ${GITHUB_USER}"
-
         # Add the new entry at the top of the file
         { echo "$NEW_ENTRY"; echo ""; cat "$DEPLOYMENT_FILE"; } > temp.txt || echo "$NEW_ENTRY" > temp.txt
         mv temp.txt "$DEPLOYMENT_FILE"
-
         cat "$DEPLOYMENT_FILE"  # Debugging: Print file contents
 
-    # Step 5: Commit and Push Deployment History
+    # Step 6: Commit and Push Deployment History
     - name: Commit and Push Deployment History
       run: |
         git config --global user.name "GitHub Actions"
