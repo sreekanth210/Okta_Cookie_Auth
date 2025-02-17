@@ -30,6 +30,10 @@ jobs:
         IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/okta_cookie_auth:$IMAGE_TAG
         LATEST_IMAGE=${{ secrets.DOCKER_USERNAME }}/okta_cookie_auth:latest
 
+        # Print the IMAGE_NAME and LATEST_IMAGE values
+        echo "🔹 IMAGE_NAME: $IMAGE_NAME"
+        echo "🔹 LATEST_IMAGE: $LATEST_IMAGE"
+
         echo "🔹 Building Docker Image: $IMAGE_NAME"
         docker build --no-cache -t $IMAGE_NAME -t $LATEST_IMAGE .
 
