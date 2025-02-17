@@ -55,12 +55,13 @@ jobs:
         # Verify Deployment Rollout
         kubectl rollout status deployment/myapp-deployment --namespace=default --timeout=30m
 
-    # NEW SECTION: Save IMAGE_NAME to a file and push it to the repo
+    # NEW SECTION: Save IMAGE_NAME to a file and push it to the repo using GH_TOKEN
     - name: Save IMAGE_NAME to File
       run: |
-        echo "IMAGE_NAME=$IMAGE_NAME" > deployment-info.txt
-        # git config --global user.name "GitHub Actions"
-        # git config --global user.email "actions@github.com"
-        # git add deployment-info.txt
-        # git commit -m "Update deployment info with IMAGE_NAME"
-        # git push
+        echo "IMAGE_NAME=$IMAGE_NAME" > deployment-info.txt # Up to here only save in runntime then to push the changes to this reps
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git remote set-url origin https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/SreekanthSree1999/Okta_Cookie_Auth.git
+        git add deployment-info.txt
+        git commit -m "Update deployment info with IMAGE_NAME"
+        git push
