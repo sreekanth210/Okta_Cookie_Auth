@@ -1,1 +1,1 @@
-IMAGE_NAME=
+IMAGE_NAME=sreekanthsree1999/okta_cookie_auth:7db01e9
