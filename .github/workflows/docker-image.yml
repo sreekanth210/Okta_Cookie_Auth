@@ -53,4 +53,4 @@ jobs:
         kubectl rollout restart deployment myapp-deployment --namespace=default
 
         # Verify Deployment Rollout
-        kubectl rollout status deployment/myapp-deployment --namespace=default --timeout=15m
+        kubectl rollout status deployment/myapp-deployment --namespace=default --timeout=50m
