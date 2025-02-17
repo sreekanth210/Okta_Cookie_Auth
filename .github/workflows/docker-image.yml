@@ -60,11 +60,11 @@ jobs:
         mkdir -p History  # Ensure the History folder exists
         touch History/deployment-info.txt  # Create the file if it doesn't exist
 
-    # Step 5: Update Deployment History in .github/workflows/deployment-info.txt
+    # Step 5: Update Deployment History in History/deployment-info.txt
     - name: Update Deployment History
       run: |
         DEPLOYMENT_FILE="History/deployment-info.txt"
-        NEW_ENTRY="Build, Push, and Deploy to Kubernetes #${DEPLOYMENT_NUM}: Commit ${COMMIT_SHA} pushed by ${GITHUB_USER}"
+        NEW_ENTRY="Build, Push, and Deploy to Kubernetes #${DEPLOYMENT_NUM}: Commit ${COMMIT_SHA} pushed by ${GITHUB_USER}, Deployed Image: ${IMAGE_NAME}"
         # Add the new entry at the top of the file
         { echo "$NEW_ENTRY"; echo ""; cat "$DEPLOYMENT_FILE"; } > temp.txt || echo "$NEW_ENTRY" > temp.txt
         mv temp.txt "$DEPLOYMENT_FILE"
