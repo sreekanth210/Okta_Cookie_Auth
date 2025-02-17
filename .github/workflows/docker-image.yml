@@ -21,9 +21,11 @@ jobs:
         fi
         echo "✅ DOCKER_USERNAME is set."
 
-    - name: Login to Docker Hub
+    # Step 1: Login to Docker Hub 
+    - name: Login to Docker Hub 
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
+    # Step 2: Build and Push Docker Image
     - name: Build and Push Docker Image
       run: |
         IMAGE_TAG=${GITHUB_SHA::7}  # Short commit SHA as a unique tag
@@ -34,6 +36,11 @@ jobs:
         echo "🔹 IMAGE_NAME: $IMAGE_NAME"
         echo "🔹 LATEST_IMAGE: $LATEST_IMAGE"
 
+        # Save IMAGE_NAME to environment file so it can be used in later steps
+        echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
+        echo "LATEST_IMAGE=$LATEST_IMAGE" >> $GITHUB_ENV
+
+        # Build and Push Docker Image
         echo "🔹 Building Docker Image: $IMAGE_NAME"
         docker build --no-cache -t $IMAGE_NAME -t $LATEST_IMAGE .
 
@@ -41,13 +48,14 @@ jobs:
         docker push $IMAGE_NAME
         docker push $LATEST_IMAGE
 
+    # Step 3: Deploy to Kubernetes
     - name: Deploy to Kubernetes
       run: |
         echo "${{ secrets.KUBECONFIG }}" > kubeconfig.yaml
         export KUBECONFIG=kubeconfig.yaml
 
         # Update Kubernetes Deployment with new image tag
-        kubectl set image deployment/myapp-deployment myapp-container=${{ secrets.DOCKER_USERNAME }}/okta_cookie_auth:latest --namespace=default
+        kubectl set image deployment/myapp-deployment myapp-container=$LATEST_IMAGE --namespace=default
 
         # Force restart to ensure new pods are created with the latest image
         kubectl rollout restart deployment/myapp-deployment --namespace=default
@@ -55,14 +63,15 @@ jobs:
         # Verify Deployment Rollout
         kubectl rollout status deployment/myapp-deployment --namespace=default --timeout=30m
 
-    # NEW SECTION: Save IMAGE_NAME to a file and push it to the repo using GH_TOKEN
-    - name: Save IMAGE_NAME to File and Push
+    # Step 4: Save IMAGE_NAME to File and Push to GitHub
+    - name: Save IMAGE_NAME to File
       run: |
         echo "IMAGE_NAME=$IMAGE_NAME" > deployment-info.txt
+        cat deployment-info.txt  # Debug: Check if file contains IMAGE_NAME
+
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
-        git add -f deployment-info.txt
-        git status
-        git diff --exit-code || git commit -m "Update deployment info with IMAGE_NAME"
-        git push || echo "⚠️ Git push failed. Check permissions and branch protection settings."
-
+        git remote set-url origin https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/SreekanthSree1999/Okta_Cookie_Auth.git
+        git add deployment-info.txt
+        git commit -m "Update deployment info with IMAGE_NAME"
+        git push
